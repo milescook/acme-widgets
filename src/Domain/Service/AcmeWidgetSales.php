@@ -44,18 +44,18 @@ class AcmeWidgetSales
     /**
      * @return int Current Basket Price in cents
      */
-    public function getBasketTotalPrice()
+    public function calculateTotalCost()
     {
-        return $this->calculateBasketPrice();
+        return $this->_productBasket->calculateTotalCost();
     }
 
     /**
-     * @return int Current Basket Price in cents
+     * @return void Empties current basket
      */
-    private function calculateBasketPrice()
+    public function emptyBasket() : void
     {
-        $basketPrice = 0;
-
-        return $basketPrice;
+        $this->_productBasket->empty();
     }
+
+    
 }

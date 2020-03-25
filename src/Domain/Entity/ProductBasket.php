@@ -4,11 +4,14 @@ namespace Domain\Entity;
 
 class ProductBasket
 {
-    /** @var array<int> _productBasket The Product Basket array, with the key being the product code  */
-    private $_productBasket;
+    /** @var array<int> _productQuantityArray The Product Basket array, with the key being the product code  */
+    private $_productQuantityArray = [];
 
     /** @var int _basketCount The Current basket count  */
     private $_basketCount = 0;
+
+    /** @var array<int> _productPrices All added producxt prices  */
+    private $_productPrices = [];
 
     /**
      * @param Product $product The product object
@@ -17,11 +20,12 @@ class ProductBasket
     public function addProduct(Product $product, int $quantity) : void
     {
         $this->_basketCount += $quantity;
+        $this->_productPrices[$product->code] = $product->priceCents;
 
-        if(!isset($this->_productBasket[$product->code]))
-            $this->_productBasket[$product->code] = $quantity;
+        if(!isset($this->_productQuantityArray[$product->code]))
+            $this->_productQuantityArray[$product->code] = $quantity;
         else
-            $this->_productBasket[$product->code] += $quantity;
+            $this->_productQuantityArray[$product->code] += $quantity;
     }
 
     /**
@@ -30,5 +34,28 @@ class ProductBasket
     public function getBasketCount() : int
     {
         return $this->_basketCount;
+    }
+
+    /**
+     * @return int Current Basket Cost in cents
+     */
+    public function calculateTotalCost()
+    {
+        $totalCost = 0;
+        foreach($this->_productQuantityArray as $productCode => $quantity)
+        {
+            $totalCost += $this->_productPrices[$productCode];
+        }
+
+        return $totalCost;
+    }
+
+    /**
+     * @return void Empties itself
+     */
+    public function empty()
+    {
+        $this->_basketCount = 0;
+        $this->_productQuantityArray = [];
     }
 }

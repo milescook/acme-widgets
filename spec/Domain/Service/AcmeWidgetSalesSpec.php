@@ -11,7 +11,7 @@ class AcmeWidgetSalesSpec extends ObjectBehavior
 {
     function let()
     {
-        $producta = new Product("B01","Blue Widget",3785);
+        $producta = new Product("B01","Blue Widget",795);
         $productb = new Product("G01","Green Widget",2495);
         $productc = new Product("R01","Red Widget",3295);
         $ProductCatalogueRepositoryMemory = new ProductCatalogueRepositoryMemory();
@@ -39,13 +39,13 @@ class AcmeWidgetSalesSpec extends ObjectBehavior
     {
         $this->shouldThrow(new InvalidProductException("Could not find product Z01"))->duringaddToBasket("Z01",1);
     }
-    /*
+    
     function it_gets_a_basket_total_price()
     {
-        $this->addToBasket("R01",1);
+        $this->addToBasket("B01",1);
         $this->addToBasket("G01",1);
-        $this->getBasketTotalPrice()->shouldReturn(3785);
+        $this->calculateTotalCost()->shouldReturn(3290);
     }
-    */
+    
     
 }
