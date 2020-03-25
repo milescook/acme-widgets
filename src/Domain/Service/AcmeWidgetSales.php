@@ -2,7 +2,9 @@
 
 namespace Domain\Service;
 
-use Domain\Entity\ProductBasket;
+use Domain\Entity\{ProductBasket,Checkout};
+use Domain\Entity\Offers\OfferCollection;
+use Domain\Entity\DeliveryRules\DeliveryRuleCollection;
 use Domain\Repository\ProductCatalogue\iProductCatalogueRepository;
 
 class AcmeWidgetSales
@@ -13,13 +15,21 @@ class AcmeWidgetSales
     /** @var iProductCatalogueRepository ProductCatalogueRepository The Product Catalogue Repository the service will use  */
     var $ProductCatalogueRepository;
 
+    /** @var Checkout Checkout The Checkout which will do the calculations  */
+    var $Checkout;
+    
     /**
      * @param iProductCatalogueRepository $ProductCatalogueRepository The Catalogue Repository to be injected in
      */
-    public function __construct(iProductCatalogueRepository $ProductCatalogueRepository)
+    public function __construct(
+        iProductCatalogueRepository $ProductCatalogueRepository, 
+        DeliveryRuleCollection $DeliveryRuleCollection=null, 
+        OfferCollection $OfferCollection=null)
     {
         $this->ProductCatalogueRepository = $ProductCatalogueRepository;
         $this->_productBasket = new ProductBasket;
+
+        $this->Checkout = new Checkout($ProductCatalogueRepository, $DeliveryRuleCollection, $OfferCollection);
     }
 
     /**
@@ -30,7 +40,6 @@ class AcmeWidgetSales
     {
         $Product = $this->ProductCatalogueRepository->getProduct($productCode);
         $this->_productBasket->addProduct($Product, $quantity);
-        
     }
 
     /**
@@ -46,7 +55,7 @@ class AcmeWidgetSales
      */
     public function calculateTotalCost()
     {
-        return $this->_productBasket->calculateTotalCost();
+        return $this->Checkout->calculateTotalCost($this->_productBasket);
     }
 
     /**
