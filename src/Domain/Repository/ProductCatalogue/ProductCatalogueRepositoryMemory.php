@@ -7,11 +7,11 @@ use Domain\Entity\Product;
 class ProductCatalogueRepositoryMemory implements iProductCatalogueRepository
 {
     /** @var array<Product> productArray */
-    private $productArray = [];
+    private $_productArray = [];
     
     public function addProduct(\Domain\Entity\Product $product)
     {
-        $this->productArray[$product->code] = $product;
+        $this->_productArray[$product->code] = $product;
     }
 
     /**
@@ -19,7 +19,14 @@ class ProductCatalogueRepositoryMemory implements iProductCatalogueRepository
      */
     public function allProducts(): array
     {
-        return $this->productArray;
+        return $this->_productArray;
     }
-    
+
+    /**
+     * @return \Domain\Entity\Product Product by that code
+     */
+    public function getProduct(string $productCode) : \Domain\Entity\Product
+    {
+        return $this->_productArray[$productCode];
+    }
 }
