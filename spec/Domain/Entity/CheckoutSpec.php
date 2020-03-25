@@ -3,6 +3,7 @@
 namespace spec\Domain\Entity;
 
 use Domain\Entity\{Checkout,Product};
+use Domain\Aggregate\DeliveryCostRuleList;
 use Domain\Repository\ProductCatalogue\ProductCatalogueRepositoryMemory;
 use PhpSpec\ObjectBehavior;
 
@@ -20,5 +21,11 @@ class CheckoutSpec extends ObjectBehavior
         $this->beConstructedWith($ProductCatalogueRepositoryMemory);
         
         $this->shouldHaveType(Checkout::class);
+    }
+
+    function it_applies_delivery_cost_rules(DeliveryCostRuleList $DeliveryCostRuleList)
+    {
+        $DeliveryCostRuleList->getDeliveryCostOnBasketCost(3295)->willReturn(495);
+        
     }
 }

@@ -3,7 +3,7 @@
 namespace Domain\Entity;
 
 use Domain\Repository\ProductCatalogue\iProductCatalogueRepository;
-use Domain\Entity\DeliveryRules\DeliveryRuleCollection;
+use Domain\Aggregate\DeliveryCostRuleList;
 use Domain\Entity\Offers\OfferCollection;
 
 class Checkout
@@ -11,19 +11,19 @@ class Checkout
     /** @var iProductCatalogueRepository $ProductCatalogueRepository The Product Catalogue Repository the service will use  */
     var $ProductCatalogueRepository;
 
-    /** @var DeliveryRuleCollection $DeliveryRuleCollection The delivery pricing rules  */
-    var $DeliveryRuleCollection;
+    /** @var DeliveryCostRuleList $DeliveryCostRuleList The delivery pricing rules  */
+    var $DeliveryCostRuleList;
 
     /** @var OfferCollection OfferCollection The offer collection  */
     var $OfferCollection;
 
     function __construct(
         iProductCatalogueRepository $ProductCatalogueRepository, 
-        DeliveryRuleCollection $DeliveryRuleCollection = null,
+        DeliveryCostRuleList $DeliveryCostRuleList = null,
         OfferCollection $OfferCollection=null)
     {
         $this->ProductCatalogueRepository = $ProductCatalogueRepository;
-        $this->DeliveryRuleCollection = $DeliveryRuleCollection;
+        $this->DeliveryCostRuleList = $DeliveryCostRuleList;
         $this->OfferCollection = $OfferCollection;
     }
 
@@ -40,7 +40,9 @@ class Checkout
             $totalCost += 
                 $quantity * $thisProduct->priceCents;
         }
-
+        if(isset($this->DeliveryCostRuleList))
+            $totalCost += $this->DeliveryCostRuleList->getDeliveryCostOnBasketCost($totalCost);
+            
         return $totalCost;
     }
 }
