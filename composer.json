@@ -1,0 +1,19 @@
+{
+    "name": "milescook/acme-widgets",
+    "description": "Acme widgets coding challenge",
+    "require-dev": {
+        "phpspec/phpspec": "^6.1",
+        "phpstan/phpstan": "^0.12.18"
+    },
+    "authors": [
+        {
+            "name": "Miles Cook",
+            "email": "miles.cook@cookieonline.net"
+        }
+    ],
+    "require": {},
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {"psr-0": {"": "src"}}
+}
