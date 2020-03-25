@@ -15,5 +15,8 @@
     "config": {
         "bin-dir": "bin"
     },
-    "autoload": {"psr-0": {"": "src"}}
+    "autoload": {"psr-0": {"": "src"}},
+    "scripts": {
+        "test": "tests.sh"
+    }
 }
