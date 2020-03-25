@@ -27,6 +27,9 @@ class ProductCatalogueRepositoryMemory implements iProductCatalogueRepository
      */
     public function getProduct(string $productCode) : \Domain\Entity\Product
     {
-        return $this->_productArray[$productCode];
+        if(isset($this->_productArray[$productCode]))
+            return $this->_productArray[$productCode];
+        
+        throw new InvalidProductException("Could not find product " . $productCode);
     }
 }

@@ -3,7 +3,7 @@
 namespace spec\Domain\Service;
 
 use Domain\Entity\Product;
-use Domain\Repository\ProductCatalogue\ProductCatalogueRepositoryMemory;
+use Domain\Repository\ProductCatalogue\{ProductCatalogueRepositoryMemory,InvalidProductException};
 use Domain\Service\AcmeWidgetSales;
 use PhpSpec\ObjectBehavior;
 
@@ -34,12 +34,18 @@ class AcmeWidgetSalesSpec extends ObjectBehavior
         $this->addToBasket("G01",2);
         $this->getBasketCount()->shouldReturn(3);
     }
+
+    function it_throws_an_exception_if_a_product_code_is_added_to_basket_that_doesnt_exist()
+    {
+        $this->shouldThrow(new InvalidProductException("Could not find product Z01"))->duringaddToBasket("Z01",1);
+    }
     /*
     function it_gets_a_basket_total_price()
     {
-        $this->addToBasket("RO1",1);
-        $this->addToBasket("GO1",1);
+        $this->addToBasket("R01",1);
+        $this->addToBasket("G01",1);
         $this->getBasketTotalPrice()->shouldReturn(3785);
     }
     */
+    
 }
