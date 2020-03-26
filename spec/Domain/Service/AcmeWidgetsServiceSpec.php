@@ -3,7 +3,8 @@
 namespace spec\Domain\Service;
 
 use Domain\Entity\Product;
-use Domain\Repository\ProductCatalogue\{ProductCatalogueRepositoryMemory,InvalidProductException};
+use Domain\Repository\ProductCatalogue\ProductCatalogueRepositoryMemory;
+use Domain\Exceptions\InvalidProductException;
 use Domain\Service\AcmeWidgetsService;
 use PhpSpec\ObjectBehavior;
 

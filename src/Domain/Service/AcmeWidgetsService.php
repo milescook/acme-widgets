@@ -3,7 +3,7 @@
 namespace Domain\Service;
 
 use Domain\Entity\{ProductBasket,Checkout};
-use Domain\Entity\Offers\OfferCollection;
+use Domain\Aggregate\OfferList;
 use Domain\Aggregate\DeliveryCostRuleList;
 use Domain\Repository\ProductCatalogue\iProductCatalogueRepository;
 
@@ -24,12 +24,12 @@ class AcmeWidgetsService
     public function __construct(
         iProductCatalogueRepository $ProductCatalogueRepository, 
         DeliveryCostRuleList $DeliveryCostRuleList=null, 
-        OfferCollection $OfferCollection=null)
+        OfferList $OfferList=null)
     {
         $this->ProductCatalogueRepository = $ProductCatalogueRepository;
         $this->_productBasket = new ProductBasket;
 
-        $this->Checkout = new Checkout($ProductCatalogueRepository, $DeliveryCostRuleList, $OfferCollection);
+        $this->Checkout = new Checkout($ProductCatalogueRepository, $DeliveryCostRuleList, $OfferList);
     }
 
     /**

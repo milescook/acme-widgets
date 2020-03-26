@@ -2,6 +2,7 @@
 
 namespace Domain\Repository\ProductCatalogue;
 
+use Domain\Exceptions\InvalidProductException;
 use Domain\Entity\Product;
 
 class ProductCatalogueRepositoryMemory implements iProductCatalogueRepository

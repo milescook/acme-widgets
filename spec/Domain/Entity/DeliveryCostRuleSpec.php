@@ -16,7 +16,7 @@ class DeliveryCostRuleSpec extends ObjectBehavior
         $this->shouldHaveType(DeliveryCostRule::class);
     }
 
-    function it_should_be_instantiated_with_params()
+    function it_should_match_againsbasket_costs()
     {
         $this->matchesBasketCost(6532)->shouldReturn(true);
         $this->matchesBasketCost(200)->shouldReturn(false);

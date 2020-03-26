@@ -1,5 +1,5 @@
 <?php
 
-namespace Domain\Repository\ProductCatalogue;
+namespace Domain\Exceptions;
 
 class InvalidProductException extends \Exception {}

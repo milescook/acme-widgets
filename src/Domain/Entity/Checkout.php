@@ -3,8 +3,7 @@
 namespace Domain\Entity;
 
 use Domain\Repository\ProductCatalogue\iProductCatalogueRepository;
-use Domain\Aggregate\DeliveryCostRuleList;
-use Domain\Entity\Offers\OfferCollection;
+use Domain\Aggregate\{DeliveryCostRuleList,OfferList};
 
 class Checkout
 {
@@ -14,17 +13,17 @@ class Checkout
     /** @var DeliveryCostRuleList $DeliveryCostRuleList The delivery pricing rules  */
     var $DeliveryCostRuleList;
 
-    /** @var OfferCollection OfferCollection The offer collection  */
-    var $OfferCollection;
+    /** @var OfferList OfferList The offers list  */
+    var $OfferList;
 
     function __construct(
         iProductCatalogueRepository $ProductCatalogueRepository, 
         DeliveryCostRuleList $DeliveryCostRuleList = null,
-        OfferCollection $OfferCollection=null)
+        OfferList $OfferList=null)
     {
         $this->ProductCatalogueRepository = $ProductCatalogueRepository;
         $this->DeliveryCostRuleList = $DeliveryCostRuleList;
-        $this->OfferCollection = $OfferCollection;
+        $this->OfferList = $OfferList;
     }
 
 
