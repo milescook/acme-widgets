@@ -7,7 +7,7 @@ use Domain\Entity\Offers\OfferCollection;
 use Domain\Aggregate\DeliveryCostRuleList;
 use Domain\Repository\ProductCatalogue\iProductCatalogueRepository;
 
-class AcmeWidgetSales
+class AcmeWidgetsService
 {
     /** @var ProductBasket $_productBasket The Current basket  */
     private $_productBasket;

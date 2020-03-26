@@ -4,10 +4,10 @@ namespace spec\Domain\Service;
 
 use Domain\Entity\Product;
 use Domain\Repository\ProductCatalogue\{ProductCatalogueRepositoryMemory,InvalidProductException};
-use Domain\Service\AcmeWidgetSales;
+use Domain\Service\AcmeWidgetsService;
 use PhpSpec\ObjectBehavior;
 
-class AcmeWidgetSalesSpec extends ObjectBehavior
+class AcmeWidgetsServiceSpec extends ObjectBehavior
 {
     function let()
     {
@@ -23,7 +23,7 @@ class AcmeWidgetSalesSpec extends ObjectBehavior
     
     function it_is_initializable()
     {
-        $this->shouldHaveType(AcmeWidgetSales::class);
+        $this->shouldHaveType(AcmeWidgetsService::class);
     }
 
     function it_adds_to_a_basket()

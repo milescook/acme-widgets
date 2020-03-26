@@ -8,7 +8,7 @@ use Domain\Entity\DeliveryCostRule;
 use Domain\Entity\Product;
 use Domain\Entity\ProductBasket;
 use Domain\Repository\ProductCatalogue\ProductCatalogueRepositoryMemory;
-use Domain\Service\AcmeWidgetSales;
+use Domain\Service\AcmeWidgetsService;
 
 /**
  * Defines application features from the specific context.
@@ -75,7 +75,7 @@ class FeatureContext implements Context
     {
         $ProductCatalogueRepository = $this->getProductCatalogueRepository($testName);
         $DeliveryCostRuleList = $this->getDeliveryRuleList($testName);
-        $this->AcmeWidgetsService = new AcmeWidgetSales($ProductCatalogueRepository,$DeliveryCostRuleList);
+        $this->AcmeWidgetsService = new AcmeWidgetsService($ProductCatalogueRepository,$DeliveryCostRuleList);
     }
 
     /**
