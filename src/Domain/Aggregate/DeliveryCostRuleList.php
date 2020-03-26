@@ -27,13 +27,16 @@ class DeliveryCostRuleList
         foreach($this->_deliveryCostRules as $thisDeliveryCostRule)
         {
             $ruleMinBasketPrice = $thisDeliveryCostRule->getMinBasketPrice();
-            if($ruleMinBasketPrice > $largestBasketCostRuleMatch && $thisDeliveryCostRule->matchesBasketCost($basketCost))
+            if($ruleMinBasketPrice >= $largestBasketCostRuleMatch && $thisDeliveryCostRule->matchesBasketCost($basketCost))
             {
                 $largestBasketCostRuleMatch = $ruleMinBasketPrice;
                 $matchingDeliveryCostRule = $thisDeliveryCostRule;
             }
         }
 
-        return $matchingDeliveryCostRule->getDeliveryCost();
+        if(isset($matchingDeliveryCostRule)) 
+            return $matchingDeliveryCostRule->getDeliveryCost();
+        
+        return 0;
     }
 }

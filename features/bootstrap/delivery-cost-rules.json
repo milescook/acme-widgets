@@ -2,11 +2,13 @@
     "standard":
     [
         {
-            "minBasket": "1",
+            "minBasket": "0",
+            "maxBasket": "4999",
             "deliveryCost": 495
         },
         {
             "minBasket": "5000",
+            "maxBasket": "8999",
             "deliveryCost": 295
         },
         {

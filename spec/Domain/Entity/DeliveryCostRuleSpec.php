@@ -9,7 +9,7 @@ class DeliveryCostRuleSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(5000,495);
+        $this->beConstructedWith(495,5000,8999);
     }
     function it_is_initializable()
     {

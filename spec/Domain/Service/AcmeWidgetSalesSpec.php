@@ -40,6 +40,7 @@ class AcmeWidgetSalesSpec extends ObjectBehavior
         $this->shouldThrow(new InvalidProductException("Could not find product Z01"))->duringaddToBasket("Z01",1);
     }
     
+    // This doesn't include delivery and offers - see behat behavioural tests 
     function it_gets_a_basket_total_price()
     {
         $this->addToBasket("B01",1);

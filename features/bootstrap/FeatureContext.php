@@ -57,8 +57,12 @@ class FeatureContext implements Context
       
         $deliveryCostRulesArray = [];
         foreach($testDeliveryCostRulesObject->{$testName} as $deliveryRuleObject)
-            $deliveryCostRulesArray[] = new DeliveryCostRule($deliveryRuleObject->minBasket,$deliveryRuleObject->deliveryCost);
-        
+        {
+            $deliveryCostRulesArray[] = new DeliveryCostRule(
+                $deliveryRuleObject->deliveryCost,
+                $deliveryRuleObject->minBasket,
+                (isset($deliveryRuleObject->maxBasket)?$deliveryRuleObject->maxBasket:null));
+        }
         $DeliveryCostRuleList = new DeliveryCostRuleList($deliveryCostRulesArray);
 
         return $DeliveryCostRuleList;

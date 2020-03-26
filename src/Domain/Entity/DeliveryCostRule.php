@@ -7,17 +7,22 @@ class DeliveryCostRule
     /** @var int $minBasketPrice Minimum basket price */
     var $minBasketPrice;
 
+    /** @var int $maxBasketPrice Maximum basket price */
+    var $maxBasketPrice;
+
     /** @var int $deliveryCost Delivery cost in this rule */
     var $deliveryCost;
 
     /**
-     * @param int $minBasketPrice The minimum basket price to qualify for this rule
      * @param int $deliveryCost The cost of delivery in this rule
+     * @param int $minBasketPrice The minimum basket price to qualify for this rule
+     * @param int $maxBasketPrice The minimum basket price to qualify for this rule
      */
-    public function __construct($minBasketPrice, $deliveryCost)
+    public function __construct($deliveryCost, $minBasketPrice, $maxBasketPrice=null)
     {
-        $this->minBasketPrice = $minBasketPrice;
         $this->deliveryCost = $deliveryCost;
+        $this->minBasketPrice = $minBasketPrice;
+        $this->maxBasketPrice = $maxBasketPrice;
     }
 
     /**
@@ -25,10 +30,21 @@ class DeliveryCostRule
      */
     public function matchesBasketCost($basketPrice) : bool
     {
-        return ($basketPrice >= $this->minBasketPrice);
+        if($basketPrice < $this->minBasketPrice)
+            return false;
+        
+        if(isset($this->maxBasketPrice) && $basketPrice > $this->maxBasketPrice)
+            return false;
+        
+        return true;
+            
     }
 
-    
+    public function getMaxBasketPrice() : int
+    {
+        return $this->maxBasketPrice;
+    }
+
     public function getMinBasketPrice() : int
     {
         return $this->minBasketPrice;
