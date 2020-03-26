@@ -3,7 +3,8 @@
     "description": "Acme widgets coding challenge",
     "require-dev": {
         "phpspec/phpspec": "^6.1",
-        "phpstan/phpstan": "^0.12.18"
+        "phpstan/phpstan": "^0.12.18",
+        "behat/behat": "^3.6"
     },
     "authors": [
         {
@@ -11,7 +12,8 @@
             "email": "miles.cook@cookieonline.net"
         }
     ],
-    "require": {},
+    "require": {
+    },
     "config": {
         "bin-dir": "bin"
     },

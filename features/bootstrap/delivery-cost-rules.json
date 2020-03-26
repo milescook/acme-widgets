@@ -1,0 +1,17 @@
+{
+    "standard":
+    [
+        {
+            "minBasket": "1",
+            "deliveryCost": 495
+        },
+        {
+            "minBasket": "5000",
+            "deliveryCost": 295
+        },
+        {
+            "minBasket": "9000",
+            "deliveryCost": 0
+        }
+    ]
+}
