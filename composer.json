@@ -19,6 +19,6 @@
     },
     "autoload": {"psr-0": {"": "src"}},
     "scripts": {
-        "test": "tests.sh"
+        "test": "./tests.sh"
     }
 }
