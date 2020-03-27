@@ -3,12 +3,21 @@ Run:
 `composer install`
 
 ## Running tests
+The test suite comprioses of:
+* **phpstan** - for symantics, code quality and basic error checking
+* **phpspec** - unit tests to allow for refactoring
+* **behat** - for ultimate acceptance criteria
+
 Run:
+
 `composer test`
 
 ...or, for a pretty layout:
 
 `./tests.sh`
+
+## Proving the solution
+The file [acme-widgets.feature](./features/acme-widgets.feature) shows the behavioural tests that prove the acceptance criteria is met. 
 
 ## Integrating this library
 Ensure that only the service layer of this project is interacted with. To initialise the AcmeWidgetsService, you need a product catalogue repository that implements [Domain\Repository\ProductCatalogue\iProductCatalogueRepository](./src/Domain/Repository/ProductCatalogue/iProductCatalogueRepository.php). Optional are Delivery Rules and Offer Rules (also both repositories). 
