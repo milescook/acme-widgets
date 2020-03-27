@@ -17,7 +17,11 @@ Run:
 `./tests.sh`
 
 ## Proving the solution
-The file [acme-widgets.feature](./features/acme-widgets.feature) shows the behavioural tests that prove the acceptance criteria is met. 
+The file [acme-widgets.feature](./features/acme-widgets.feature) shows the behavioural tests that prove the acceptance criteria is met. To run just the behavioual tests, run:
+
+`bin/behat`
+
+As no CLI/interface/API is required, none have been built. Change some of the behavioural tests or add some more, and re-run the tests to see the system working.
 
 ## Integrating this library
 Ensure that only the service layer of this project is interacted with. To initialise the AcmeWidgetsService, you need a product catalogue repository that implements [Domain\Repository\ProductCatalogue\iProductCatalogueRepository](./src/Domain/Repository/ProductCatalogue/iProductCatalogueRepository.php). Optional are Delivery Rules and Offer Rules (also both repositories). 
