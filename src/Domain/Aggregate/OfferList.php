@@ -63,38 +63,12 @@ class OfferList
 
         foreach($this->_offers as $thisOffer)
         {
-            $BasketDiscounts = $this->getQualifyingBasketDiscounts($thisOffer,$productCounts);
-            $BasketDiscountList->setBasketDiscounts($BasketDiscounts);
+            foreach($this->getQualifyingBasketDiscounts($thisOffer,$productCounts) as $BasketDiscount)
+                $BasketDiscountList->add($BasketDiscount);
         }
         return $BasketDiscountList;
     }
 
-
-    /**
-     * @param Offer $Offer The offer
-     * @param array<int> $productCounts The product quantities indexed by product code
-     * @return array<int, array<int|string, int>> The qualifying product combinations
-     */
-    function getQualifyingDiscounts(Offer $Offer, array $productCounts) : array
-    {
-        $qualifyingcombinations = [];
-        $qualifyingBasketDiscounts = [];
-        
-        foreach($productCounts as $productCode=>$productCount)
-        {
-            $occurancesOfferMatchedResult = $Offer->productCombinationQualifyResult($productCode,$productCount);
-            if($occurancesOfferMatchedResult["matches"]>0)
-            {
-                $qualifyingBasketDiscounts[] = new BasketDiscount($occurancesOfferMatchedResult['matches'],$Offer->getDiscount());
-                $qualifyingcombinations[] = 
-                [
-                    "offersMatchedCount" => $occurancesOfferMatchedResult['matches'],
-                    "offerDiscount" => $Offer->getDiscount()
-                ];
-            }
-        }
-        return $qualifyingcombinations;
-    }
 
     /**
      * @param Offer $Offer The offer
@@ -109,10 +83,8 @@ class OfferList
         {
             $occurancesOfferMatchedResult = $Offer->productCombinationQualifyResult($productCode,$productCount);
             if($occurancesOfferMatchedResult["matches"]>0)
-            {
                 $qualifyingBasketDiscounts[] = new BasketDiscount($occurancesOfferMatchedResult['matches'],$Offer->getDiscount());
                
-            }
         }
         return $qualifyingBasketDiscounts;
     }

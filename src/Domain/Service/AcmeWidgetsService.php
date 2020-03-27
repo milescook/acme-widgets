@@ -20,6 +20,8 @@ class AcmeWidgetsService
     
     /**
      * @param iProductCatalogueRepository $ProductCatalogueRepository The Catalogue Repository to be injected in
+     * @param DeliveryCostRuleList $DeliveryCostRuleList The List aggregate of DeliveryRules
+     * @param OfferList $OfferList The List aggregate of Offers
      */
     public function __construct(
         iProductCatalogueRepository $ProductCatalogueRepository, 
@@ -57,14 +59,4 @@ class AcmeWidgetsService
     {
         return $this->Checkout->calculateTotalCost($this->_productBasket);
     }
-
-    /**
-     * @return void Empties current basket
-     */
-    public function emptyBasket() : void
-    {
-        $this->_productBasket->empty();
-    }
-
-    
 }

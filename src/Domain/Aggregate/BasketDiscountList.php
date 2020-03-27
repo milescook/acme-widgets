@@ -20,11 +20,11 @@ class BasketDiscountList
     }
 
     /**
-     * @param array<BasketDiscount> $basketDiscountsArray Array of BasketDiscounts
+     * @param BasketDiscount $BasketDiscount Basket Discount
      */
-    public function setBasketDiscounts(array $basketDiscountsArray) : void
+    public function add(BasketDiscount $BasketDiscount) : void
     {
-        $this->_basketDiscounts = $basketDiscountsArray;
+        $this->_basketDiscounts[] = $BasketDiscount;
     }
 
     /**
