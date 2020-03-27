@@ -32,13 +32,11 @@ class OfferListSpec extends ObjectBehavior
         $expectedResult = 
         [
             [
-                "productCode" => "R01",
-                "productsUsedCount" => 2,
                 "offersMatchedCount" => 1,
                 "offerDiscount" => 50
             ]
         ];
-        $this->getQualifyingProductCombinations($Offer,$productCounts)->shouldReturn($expectedResult);
+        $this->getQualifyingDiscounts($Offer,$productCounts)->shouldReturn($expectedResult);
     }
 
     function it_is_initializable()

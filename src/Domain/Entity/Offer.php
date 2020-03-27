@@ -78,7 +78,6 @@ class Offer
                 "productsUnused" => (int) $quantity % $requiredQuantity
             ];
             
-            
         }
 
         return $resultArray;

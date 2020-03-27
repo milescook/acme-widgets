@@ -4,6 +4,7 @@ namespace Domain\Aggregate;
 
 use Domain\Entity\Offer;
 use Domain\Repository\ProductCatalogue\iProductCatalogueRepository;
+use Domain\Aggregate\BasketDiscountList;
 use Domain\ValueObject\OfferType\iOfferType;
 
 class OfferList
@@ -53,31 +54,31 @@ class OfferList
 
     /**
      * @param array<int> $productCounts Array of product counts indexed by product code
-     * @return int Discount for these products 
+     * @return BasketDiscountList Discount for these products 
      */
-    public function getOfferDiscountUsingProductItems(array $productCounts) : int
+    public function getBasketDiscountListUsingProductItems(array $productCounts) : BasketDiscountList
     {
-        $discount = 0;
-        
+        $BasketDiscountList = new BasketDiscountList();
+
         foreach($this->_offers as $thisOffer)
         {
-            $productCombinationsResult = $this->getQualifyingProductCombinations($thisOffer,$productCounts);
+            $productCombinationsResult = $this->getQualifyingDiscounts($thisOffer,$productCounts);
             foreach($productCombinationsResult as $thisResult)
             {
                 if(isset($thisResult["offersMatchedCount"]) && $thisResult["offersMatchedCount"]>0)
-                    $discount += $thisResult["offersMatchedCount"] * $thisResult["offerDiscount"];
+                    $BasketDiscountList->addDiscountResult($thisResult["offersMatchedCount"],$thisResult["offerDiscount"]);
             }
         }
-
-        return $discount;
+        return $BasketDiscountList;
     }
+
 
     /**
      * @param Offer $Offer The offer
      * @param array<int> $productCounts The product quantities indexed by product code
      * @return array<int, array<int|string, int>> The qualifying product combinations
      */
-    function getQualifyingProductCombinations(Offer $Offer, array $productCounts) : array
+    function getQualifyingDiscounts(Offer $Offer, array $productCounts) : array
     {
         $qualifyingcombinations = [];
         $offerCombinations = $Offer->getProductCombinations();
@@ -88,8 +89,6 @@ class OfferList
             {
                 $qualifyingcombinations[] = 
                 [
-                    "productCode" => $productCode,
-                    "productsUsedCount" => $occurancesOfferMatchedResult['productsUsed'],
                     "offersMatchedCount" => $occurancesOfferMatchedResult['matches'],
                     "offerDiscount" => $Offer->getDiscount()
                 ];

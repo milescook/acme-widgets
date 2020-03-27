@@ -3,7 +3,8 @@
 namespace Domain\Entity;
 
 use Domain\Repository\ProductCatalogue\iProductCatalogueRepository;
-use Domain\Aggregate\{DeliveryCostRuleList,OfferList};
+use Domain\Aggregate\{DeliveryCostRuleList,OfferList,BasketDiscountList};
+
 
 class Checkout
 {
@@ -64,8 +65,11 @@ class Checkout
     private function getOffersDiscount($ProductBasket) : int
     {
         if(isset($this->OfferList))
-            return $this->OfferList->getOfferDiscountUsingProductItems($ProductBasket->getProductCounts());
-
+        {
+            $BasketDiscountList = $this->OfferList->getBasketDiscountListUsingProductItems($ProductBasket->getProductCounts());
+            $discountInCents = $BasketDiscountList->getTotalDiscount();
+            return $discountInCents;
+        }
         return 0;
     }
 
