@@ -3,7 +3,7 @@ Run:
 `composer install`
 
 ## Running tests
-The test suite comprioses of:
+The test suite comprises of:
 * **phpstan** - for symantics, code quality and basic error checking
 * **phpspec** - unit tests to allow for refactoring
 * **behat** - for ultimate acceptance criteria
