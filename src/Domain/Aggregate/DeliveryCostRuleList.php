@@ -21,7 +21,6 @@ class DeliveryCostRuleList
 
     function getDeliveryCostOnBasketCost(int $basketCost) : int
     {
-        $deliveryCost = 0;
         $largestBasketCostRuleMatch = 0;
         $matchingDeliveryCostRule = null;
         foreach($this->_deliveryCostRules as $thisDeliveryCostRule)

@@ -18,7 +18,6 @@ interface iProductCatalogueRepository
 
     /**
      * @return array<\Domain\Entity\Product> Array of Products in the database
-     * @throws InvalidProductException
      */
     public function allProducts() : array;
 }

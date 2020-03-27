@@ -2,4 +2,7 @@
 
 namespace Domain\Exceptions;
 
-class InvalidProductException extends \Exception {}
+class InvalidProductException extends \Exception
+{
+
+}

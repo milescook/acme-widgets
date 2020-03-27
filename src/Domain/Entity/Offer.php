@@ -2,7 +2,7 @@
 
 namespace Domain\Entity;
 
-use Domain\Valueobject\OfferType;
+use Domain\ValueObject\OfferType\iOfferType;
 
 class Offer
 {
@@ -12,11 +12,19 @@ class Offer
     /** @var array<int> $_productCombinations Product combinations, as an array of quantities needed indexed by their product code */
     private $_productCombinations = [];
 
-    /** @var OfferType $OfferType The type for this offer */
+    /** @var iOfferType $OfferType The type for this offer */
     var $OfferType;
 
-    /** @param OfferType $OfferType The type for this offer */
-    function __construct(OfferType $OfferType)
+
+
+    /** @param iOfferType $OfferType The type for this offer */
+    function __construct(iOfferType $OfferType=null) 
+    {
+        $this->setOfferType($OfferType);
+    }
+
+    /** @param iOfferType $OfferType The type for this offer */
+    public function setOfferType(iOfferType $OfferType) : void
     {
         $this->OfferType = $OfferType;
     }
@@ -43,6 +51,37 @@ class Offer
                 return true;
         }
         return false;
+    }
+
+    /**
+     * @param string $productCode Product code to search this offer for
+     * @param int $quantity Quantity
+     * @return array<int> Occurance results of the offer qualify
+     */
+    public function productCombinationQualifyResult(string $productCode, int $quantity) : array
+    {
+        $resultArray =
+        [
+            "matches" => 0
+        ];
+
+        if(!$this->productQualifies($productCode))
+            return $resultArray;
+
+        $requiredQuantity = $this->_productCombinations[$productCode];
+        if($quantity>=$requiredQuantity)
+        {
+            $resultArray =
+            [
+                "matches" => (int) round($quantity / $requiredQuantity,0,PHP_ROUND_HALF_DOWN),
+                "productsUsed" => (int) $quantity - ($quantity % $requiredQuantity),
+                "productsUnused" => (int) $quantity % $requiredQuantity
+            ];
+            
+            
+        }
+
+        return $resultArray;
     }
 
     /**
@@ -80,5 +119,23 @@ class Offer
             return $this->_productPrices[$productCode];
         else
             throw new \Domain\Exceptions\InvalidProductException();
+    }
+    
+    /**
+     * @return string Offer type name
+     */
+    public function getOfferTypeName() : string
+    {
+        return $this->OfferType->getName();
+    }
+
+    /**
+     * @return int Discount in cents
+     */
+    public function getDiscount()
+    {
+        $this->OfferType->setProductPrices($this->_productPrices);
+        $this->OfferType->setProductQuantities($this->_productCombinations);
+        return $this->OfferType->calculateOfferDiscount();
     }
 }

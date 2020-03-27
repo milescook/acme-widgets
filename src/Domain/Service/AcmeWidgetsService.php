@@ -28,7 +28,7 @@ class AcmeWidgetsService
     {
         $this->ProductCatalogueRepository = $ProductCatalogueRepository;
         $this->_productBasket = new ProductBasket;
-
+        
         $this->Checkout = new Checkout($ProductCatalogueRepository, $DeliveryCostRuleList, $OfferList);
     }
 

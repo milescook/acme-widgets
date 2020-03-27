@@ -1,0 +1,15 @@
+{
+    "standard":
+    [
+        {
+            "type": "BuyOneGetOneHalfPrice",
+            "productCombinations": 
+            [
+                {
+                    "code": "R01",
+                    "quantity": 2
+                }
+            ]
+        }
+    ]
+}

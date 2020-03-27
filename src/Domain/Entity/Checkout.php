@@ -29,8 +29,22 @@ class Checkout
 
     /**
      * @return int Current Basket Cost in cents
+     * This is the entry point for all logic
      */
     public function calculateTotalCost(ProductBasket $ProductBasket)
+    {
+        $totalCost = $this->calculateBasketCost($ProductBasket);
+        $totalCost -= $this->getOffersDiscount($ProductBasket);
+        $totalCost += $this->getDeliveryCost($totalCost);
+        
+        return $totalCost;
+    }
+
+    /**
+     * @param ProductBasket $ProductBasket The basket
+     * @return int Total cost
+     */
+    private function calculateBasketCost(ProductBasket $ProductBasket) : int
     {
         $totalCost = 0;
         foreach($ProductBasket->getBasketContents() as $thisProduct)
@@ -39,9 +53,31 @@ class Checkout
             $totalCost += 
                 $quantity * $thisProduct->priceCents;
         }
-        if(isset($this->DeliveryCostRuleList))
-            $totalCost += $this->DeliveryCostRuleList->getDeliveryCostOnBasketCost($totalCost);
-            
+
         return $totalCost;
+    }
+
+    /**
+     * @param ProductBasket $ProductBasket The basket
+     * @return int Total discount
+     */
+    private function getOffersDiscount($ProductBasket) : int
+    {
+        if(isset($this->OfferList))
+            return $this->OfferList->getOfferDiscountUsingProductItems($ProductBasket->getProductCounts());
+
+        return 0;
+    }
+
+    /**
+     * @param int $totalCost The basket cost in cents
+     * @return int Total discount
+     */
+    private function getDeliveryCost($totalCost) : int
+    {
+        if(isset($this->DeliveryCostRuleList))
+            return $this->DeliveryCostRuleList->getDeliveryCostOnBasketCost($totalCost);
+        
+        return 0;
     }
 }

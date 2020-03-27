@@ -3,8 +3,8 @@
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Domain\Aggregate\DeliveryCostRuleList;
-use Domain\Entity\DeliveryCostRule;
+use Domain\Aggregate\{DeliveryCostRuleList,Offerlist};
+use Domain\Entity\{DeliveryCostRule,Offer};
 use Domain\Entity\Product;
 use Domain\Entity\ProductBasket;
 use Domain\Repository\ProductCatalogue\ProductCatalogueRepositoryMemory;
@@ -20,17 +20,6 @@ class FeatureContext implements Context
     var $AcmeWidgetsService;
     var $ProductBasket;
 
-    /**
-     * Initializes context.
-     *
-     * Every scenario gets its own context instance.
-     * You can also pass arbitrary arguments to the
-     * context constructor through behat.yml.
-     */
-    public function __construct()
-    {
-        
-    }
 
     private function getProductCatalogueRepository($catalogue)
     {
@@ -68,6 +57,21 @@ class FeatureContext implements Context
         return $DeliveryCostRuleList;
     }
 
+    function getOfferList($testName,$ProductCatalogueRepository)
+    {
+        $offerListString = file_get_contents("features/bootstrap/offers.json");
+        $offerListObject = json_decode($offerListString);
+        $Offerlist = new OfferList($ProductCatalogueRepository);
+        foreach($offerListObject->{$testName} as $offerObject)
+        {
+            $productCombinationsArray = [];
+            foreach($offerObject->productCombinations as $thisCombinationObject)
+                $productCombinationsArray[$thisCombinationObject->code] = $thisCombinationObject->quantity;
+            $Offerlist->addOffer($offerObject->type,$productCombinationsArray);
+        }
+
+        return $Offerlist;
+    }
     /**
      * @Given I have the service initialised with test data :testName
      */
@@ -75,7 +79,8 @@ class FeatureContext implements Context
     {
         $ProductCatalogueRepository = $this->getProductCatalogueRepository($testName);
         $DeliveryCostRuleList = $this->getDeliveryRuleList($testName);
-        $this->AcmeWidgetsService = new AcmeWidgetsService($ProductCatalogueRepository,$DeliveryCostRuleList);
+        $OfferList = $this->getOfferList($testName,$ProductCatalogueRepository);
+        $this->AcmeWidgetsService = new AcmeWidgetsService($ProductCatalogueRepository,$DeliveryCostRuleList,$OfferList);
     }
 
     /**

@@ -41,6 +41,14 @@ class ProductBasket
     }
 
     /**
+     * @return array<int> Get basket counts indexed by product code
+     */
+    public function getProductCounts() : array
+    {
+        return $this->_productQuantityArray;
+    }
+
+    /**
      * @param string $productCode Product code
      * @return int Product quantity
      */
