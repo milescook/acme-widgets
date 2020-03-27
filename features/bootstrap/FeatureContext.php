@@ -8,6 +8,7 @@ use Domain\Entity\{DeliveryCostRule,Offer};
 use Domain\Entity\Product;
 use Domain\Entity\ProductBasket;
 use Domain\Repository\Offer\iOfferRepository;
+use Domain\Repository\DeliveryCostRule\DeliveryCostRuleRepositoryMemory;
 use Domain\Repository\ProductCatalogue\ProductCatalogueRepositoryMemory;
 use Domain\Repository\Offer\OfferRepositoryMemory;
 use Domain\Service\AcmeWidgetsService;
@@ -41,46 +42,27 @@ class FeatureContext implements Context
         return $ProductCatalogueRepository;
     }
 
-    private function getDeliveryRuleList($testName)
+    private function getDeliveryRuleRepository($testName)
     {
         $testDeliveryCostRulesString = file_get_contents("features/bootstrap/delivery-cost-rules.json");
         $testDeliveryCostRulesObject = json_decode($testDeliveryCostRulesString);
       
-        $deliveryCostRulesArray = [];
+        $DeliveryCostRuleRepository = new DeliveryCostRuleRepositoryMemory();
+
         foreach($testDeliveryCostRulesObject->{$testName} as $deliveryRuleObject)
         {
-            $deliveryCostRulesArray[] = new DeliveryCostRule(
+            $deliveryCostRule = new DeliveryCostRule(
                 $deliveryRuleObject->deliveryCost,
                 $deliveryRuleObject->minBasket,
                 (isset($deliveryRuleObject->maxBasket)?$deliveryRuleObject->maxBasket:null));
+            
+            $DeliveryCostRuleRepository->addRule($deliveryCostRule);
         }
-        $DeliveryCostRuleList = new DeliveryCostRuleList($deliveryCostRulesArray);
-
-        return $DeliveryCostRuleList;
+        
+        return $DeliveryCostRuleRepository;
     }
 
     
-
-    /*
-    function getOfferList($testName,$ProductCatalogueRepository)
-    {
-        $offerListString = file_get_contents("features/bootstrap/offers.json");
-        $offerListObject = json_decode($offerListString);
-        $Offerlist = new OfferList($ProductCatalogueRepository);
-        foreach($offerListObject->{$testName} as $offerObject)
-        {
-            $Offer = new Offer($this->getOfferTypeFromString($type));
-            $Offer->setProductCombinations($productCombinations);
-
-            $productCombinationsArray = [];
-            foreach($offerObject->productCombinations as $thisCombinationObject)
-                $productCombinationsArray[$thisCombinationObject->code] = $thisCombinationObject->quantity;
-            $Offerlist->addOffer($offerObject->type,$productCombinationsArray);
-        }
-
-        return $Offerlist;
-    }
-    */
     function getOfferRepository($testName,$ProductCatalogueRepository) : iOfferRepository
     {
         $offerListString = file_get_contents("features/bootstrap/offers.json");
@@ -108,9 +90,9 @@ class FeatureContext implements Context
     public function iHaveTheServiceInitialisedWithTestData($testName)
     {
         $ProductCatalogueRepository = $this->getProductCatalogueRepository($testName);
-        $DeliveryCostRuleList = $this->getDeliveryRuleList($testName);
+        $DeliveryCostRuleRepository = $this->getDeliveryRuleRepository($testName);
         $OfferRepository = $this->getOfferRepository($testName,$ProductCatalogueRepository);
-        $this->AcmeWidgetsService = new AcmeWidgetsService($ProductCatalogueRepository,$DeliveryCostRuleList,$OfferRepository);
+        $this->AcmeWidgetsService = new AcmeWidgetsService($ProductCatalogueRepository,$DeliveryCostRuleRepository,$OfferRepository);
     }
 
     /**

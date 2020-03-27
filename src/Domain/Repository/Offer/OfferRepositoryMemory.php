@@ -11,7 +11,7 @@ class OfferRepositoryMemory implements iOfferRepository
     /** @var array<Offer> offerArray */
     private $_offerArray = [];
     
-    public function addOffer(\Domain\Entity\Offer $offer) : void
+    public function addOffer(Offer $offer) : void
     {
         $this->_offerArray[] = $offer;
     }
@@ -24,11 +24,13 @@ class OfferRepositoryMemory implements iOfferRepository
         return $this->_offerArray;
     }
 
-
+    /**
+     * @return OfferList Offers list collection object
+     */
     public function getOfferList(iProductCatalogueRepository $ProductCatalogueRepository) : OfferList
     {
         $OfferList = new OfferList($ProductCatalogueRepository);
-        $OfferList->setOfferArray($this->_offerArray);
+        $OfferList->setOfferArray($this->allOffers());
 
         return $OfferList;
     }

@@ -37,23 +37,6 @@ class OfferList
     }
 
     /**
-     * @param string $type Offer type
-     * @param array<int> $productCombinations Array of product combinations indexed by product code
-     */
-    public function addOffer(string $type,array $productCombinations) : void
-    {
-        $Offer = new Offer(Offer::getOfferTypeFromString($type));
-        $Offer->setProductCombinations($productCombinations);
-        foreach($productCombinations as $productCode=>$quantity)
-        {
-            $Product = $this->ProductCatalogueRepository->getProduct($productCode);
-            $Offer->setProductPrice($productCode,$Product->priceCents);
-        }
-
-        $this->_offers[] = $Offer;
-    }
-
-    /**
      * @param array<Offer> $offerArray Offer array
      */
     public function setOfferArray(array $offerArray) : void
@@ -96,6 +79,4 @@ class OfferList
         }
         return $qualifyingBasketDiscounts;
     }
-
-    
 }

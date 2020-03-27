@@ -3,20 +3,24 @@
 namespace Domain\Repository\Offer;
 
 use Domain\Aggregate\OfferList;
+use Domain\Entity\Offer;
 use Domain\Repository\ProductCatalogue\iProductCatalogueRepository;
 
 interface iOfferRepository
 {
     /**
-     * @param \Domain\Entity\Offer $offer Offer being added
+     * @param Offer $Offer Offer being added
      * @return void
      */
-    public function addOffer(\Domain\Entity\Offer $offer);
+    public function addOffer(Offer $Offer);
 
     /**
-     * @return array<\Domain\Entity\Offer> Array of Offers in the database
+     * @return array<Offer> Array of Offers in the database
      */
     public function allOffers() : array;
 
+    /**
+     * @return OfferList Offers list collection object
+     */
     public function getOfferList(iProductCatalogueRepository $ProductCatalogueRepository) : OfferList;
 }
