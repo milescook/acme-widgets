@@ -6,6 +6,7 @@ use Domain\Entity\Offer;
 use Domain\Repository\ProductCatalogue\iProductCatalogueRepository;
 use Domain\Aggregate\BasketDiscountList;
 use Domain\ValueObject\OfferType\iOfferType;
+use Domain\ValueObject\BasketDiscount;
 
 class OfferList
 {
@@ -62,12 +63,8 @@ class OfferList
 
         foreach($this->_offers as $thisOffer)
         {
-            $productCombinationsResult = $this->getQualifyingDiscounts($thisOffer,$productCounts);
-            foreach($productCombinationsResult as $thisResult)
-            {
-                if(isset($thisResult["offersMatchedCount"]) && $thisResult["offersMatchedCount"]>0)
-                    $BasketDiscountList->addDiscountResult($thisResult["offersMatchedCount"],$thisResult["offerDiscount"]);
-            }
+            $BasketDiscounts = $this->getQualifyingBasketDiscounts($thisOffer,$productCounts);
+            $BasketDiscountList->setBasketDiscounts($BasketDiscounts);
         }
         return $BasketDiscountList;
     }
@@ -81,12 +78,14 @@ class OfferList
     function getQualifyingDiscounts(Offer $Offer, array $productCounts) : array
     {
         $qualifyingcombinations = [];
-        $offerCombinations = $Offer->getProductCombinations();
+        $qualifyingBasketDiscounts = [];
+        
         foreach($productCounts as $productCode=>$productCount)
         {
             $occurancesOfferMatchedResult = $Offer->productCombinationQualifyResult($productCode,$productCount);
             if($occurancesOfferMatchedResult["matches"]>0)
             {
+                $qualifyingBasketDiscounts[] = new BasketDiscount($occurancesOfferMatchedResult['matches'],$Offer->getDiscount());
                 $qualifyingcombinations[] = 
                 [
                     "offersMatchedCount" => $occurancesOfferMatchedResult['matches'],
@@ -95,6 +94,27 @@ class OfferList
             }
         }
         return $qualifyingcombinations;
+    }
+
+    /**
+     * @param Offer $Offer The offer
+     * @param array<int> $productCounts The product quantities indexed by product code
+     * @return array<BasketDiscount> The qualifying discounts
+     */
+    function getQualifyingBasketDiscounts(Offer $Offer, array $productCounts) : array
+    {
+        $qualifyingBasketDiscounts = [];
+        
+        foreach($productCounts as $productCode=>$productCount)
+        {
+            $occurancesOfferMatchedResult = $Offer->productCombinationQualifyResult($productCode,$productCount);
+            if($occurancesOfferMatchedResult["matches"]>0)
+            {
+                $qualifyingBasketDiscounts[] = new BasketDiscount($occurancesOfferMatchedResult['matches'],$Offer->getDiscount());
+               
+            }
+        }
+        return $qualifyingBasketDiscounts;
     }
 
     private function getOfferTypeFromString(string $offerTypeName) : iOfferType

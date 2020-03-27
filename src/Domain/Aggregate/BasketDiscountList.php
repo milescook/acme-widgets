@@ -1,12 +1,14 @@
 <?php
 
 namespace Domain\Aggregate;
+use Domain\ValueObject\BasketDiscount;
 
 class BasketDiscountList
 {
 
-    /** @var array<array <int>> $_discounts Discounts held */
-    private $_discounts = [];
+    /** @var array<BasketDiscount> $_basketDiscounts Array of BasketDiscounts held */
+    private $_basketDiscounts = [];
+
 
     /**
      * @param int $offerCount Number of offers used
@@ -14,11 +16,15 @@ class BasketDiscountList
      */
     public function addDiscountResult($offerCount, $discountPerOffer) : void
     {
-        $this->_discounts[] =
-        [
-            "offersMatchedCount" => $offerCount,
-            "offerDiscount" => $discountPerOffer
-        ];
+        $this->_basketDiscounts[] = new BasketDiscount($offerCount,$discountPerOffer);
+    }
+
+    /**
+     * @param array<BasketDiscount> $basketDiscountsArray Array of BasketDiscounts
+     */
+    public function setBasketDiscounts(array $basketDiscountsArray) : void
+    {
+        $this->_basketDiscounts = $basketDiscountsArray;
     }
 
     /**
@@ -27,9 +33,9 @@ class BasketDiscountList
     public function getTotalDiscount() : int
     {
         $totalDiscountCents = 0;
-        foreach($this->_discounts as $thisDiscount)
+        foreach($this->_basketDiscounts as $thisBasketDiscount)
         {
-            $totalDiscountCents += $thisDiscount["offersMatchedCount"] * $thisDiscount["offerDiscount"]; 
+            $totalDiscountCents += $thisBasketDiscount->getDiscountTotal();
         }
 
         return $totalDiscountCents;
