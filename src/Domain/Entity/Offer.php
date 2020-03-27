@@ -137,4 +137,12 @@ class Offer
         $this->OfferType->setProductQuantities($this->_productCombinations);
         return $this->OfferType->calculateOfferDiscount();
     }
+
+    public static function getOfferTypeFromString(string $offerTypeName) : iOfferType
+    {
+        $offerTypeClass = 'Domain\ValueObject\OfferType\\'.$offerTypeName;
+        $OfferType = new $offerTypeClass();
+
+        return $OfferType;
+    }
 }

@@ -42,7 +42,7 @@ class OfferList
      */
     public function addOffer(string $type,array $productCombinations) : void
     {
-        $Offer = new Offer($this->getOfferTypeFromString($type));
+        $Offer = new Offer(Offer::getOfferTypeFromString($type));
         $Offer->setProductCombinations($productCombinations);
         foreach($productCombinations as $productCode=>$quantity)
         {
@@ -53,6 +53,14 @@ class OfferList
         $this->_offers[] = $Offer;
     }
 
+    /**
+     * @param array<Offer> $offerArray Offer array
+     */
+    public function setOfferArray(array $offerArray) : void
+    {
+         $this->_offers = $offerArray;
+        
+    }
     /**
      * @param array<int> $productCounts Array of product counts indexed by product code
      * @return BasketDiscountList Discount for these products 
@@ -89,11 +97,5 @@ class OfferList
         return $qualifyingBasketDiscounts;
     }
 
-    private function getOfferTypeFromString(string $offerTypeName) : iOfferType
-    {
-        $offerTypeClass = 'Domain\ValueObject\OfferType\\'.$offerTypeName;
-        $OfferType = new $offerTypeClass();
-
-        return $OfferType;
-    }
+    
 }

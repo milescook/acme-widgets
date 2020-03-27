@@ -6,6 +6,7 @@ use Domain\Entity\{ProductBasket,Checkout};
 use Domain\Aggregate\OfferList;
 use Domain\Aggregate\DeliveryCostRuleList;
 use Domain\Repository\ProductCatalogue\iProductCatalogueRepository;
+use Domain\Repository\Offer\iOfferRepository;
 
 class AcmeWidgetsService
 {
@@ -21,16 +22,19 @@ class AcmeWidgetsService
     /**
      * @param iProductCatalogueRepository $ProductCatalogueRepository The Catalogue Repository to be injected in
      * @param DeliveryCostRuleList $DeliveryCostRuleList The List aggregate of DeliveryRules
-     * @param OfferList $OfferList The List aggregate of Offers
+     * @param iOfferRepository $OfferRepository The Offer Repository - this gets converted straight to a list
      */
     public function __construct(
         iProductCatalogueRepository $ProductCatalogueRepository, 
         DeliveryCostRuleList $DeliveryCostRuleList=null, 
-        OfferList $OfferList=null)
+        iOfferRepository $OfferRepository=null)
     {
         $this->ProductCatalogueRepository = $ProductCatalogueRepository;
         $this->_productBasket = new ProductBasket;
-        
+        $OfferList = null;
+        if(isset($OfferRepository))
+            $OfferList = $OfferRepository->getOfferList($ProductCatalogueRepository);
+
         $this->Checkout = new Checkout($ProductCatalogueRepository, $DeliveryCostRuleList, $OfferList);
     }
 

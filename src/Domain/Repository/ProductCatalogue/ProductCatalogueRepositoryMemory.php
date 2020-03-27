@@ -10,13 +10,16 @@ class ProductCatalogueRepositoryMemory implements iProductCatalogueRepository
     /** @var array<Product> productArray */
     private $_productArray = [];
     
-    public function addProduct(\Domain\Entity\Product $product)
+    /**
+     * @param Product $product Product to add
+     */
+    public function addProduct(\Domain\Entity\Product $product) : void
     {
         $this->_productArray[$product->code] = $product;
     }
 
     /**
-     * @return array<\Domain\Entity\Product> Array of Products in the database
+     * @return array<Product> Array of Products in the database
      */
     public function allProducts(): array
     {
@@ -33,4 +36,5 @@ class ProductCatalogueRepositoryMemory implements iProductCatalogueRepository
         
         throw new InvalidProductException("Could not find product " . $productCode);
     }
+
 }
